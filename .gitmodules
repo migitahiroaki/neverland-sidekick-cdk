@@ -1,0 +1,3 @@
+[submodule "subprojects/vedustseeker"]
+	path = subprojects/vedustseeker
+	url = https://github.com/migitahiroaki/vedustseeker.git
