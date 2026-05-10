@@ -1,11 +1,17 @@
-import { LogLevel, NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
-import { aws_lambda as lambda, aws_dynamodb as dynamodb } from "aws-cdk-lib";
+import {
+  aws_lambda as lambda,
+  aws_dynamodb as dynamodb,
+  aws_ec2 as ec2,
+} from "aws-cdk-lib";
 import * as cdk from "aws-cdk-lib/core";
 import * as path from "path";
 
 export interface VedustSeekerProps extends cdk.StackProps {
   readonly tableName: string;
+  readonly vpc: ec2.IVpc;
+  readonly subnets: ec2.SubnetSelection;
 }
 
 export class VedustSeeker extends cdk.Stack {
@@ -34,8 +40,14 @@ export class VedustSeeker extends cdk.Stack {
       timeout: cdk.Duration.seconds(10),
       applicationLogLevelV2: lambda.ApplicationLogLevel.DEBUG,
       loggingFormat: lambda.LoggingFormat.JSON,
+      memorySize: 512,
+      vpc: props.vpc,
+      vpcSubnets: props.subnets,
+      ipv6AllowedForDualStack: true,
+      allowAllIpv6Outbound: true,
+      allowAllOutbound: true,
       bundling: {
-        minify: false,
+        minify: true,
         sourceMap: true,
         tsconfig: path.join(vedustseekerRepo, "tsconfig.json"),
         externalModules: ["@aws-sdk/*"],
