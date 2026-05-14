@@ -2,8 +2,10 @@
 import * as cdk from "aws-cdk-lib/core";
 import { VedustSeeker } from "../lib/vedustSeeker";
 import { Vpc } from "../lib/vpcStack";
+import { StringParameter } from "aws-cdk-lib/aws-ssm";
 
 const env: cdk.Environment = {
+  account: process.env.CDK_DEFAULT_ACCOUNT,
   region: "us-east-1",
 };
 
@@ -16,4 +18,11 @@ const vedustSeekerStack = new VedustSeeker(app, "VedustSeeker", {
   tableName: "voting-escrow-dust",
   vpc: vpcStack.vpc,
   subnets: vpcStack.getLambdaSubnetSelection(),
+  domainName: "api.neverland.jp-wiki.com",
+  certUuid: "da4a526a-13d7-4c1e-80a7-6a1fdaffaafe",
+  ssmCoingeckoApiKey: "/VedustSeeker/CoingeckoApiKey",
+  ssmOpenSeaApiKey: "/VedustSeeker/OpenSeaApiKey",
+  seekInterval: cdk.Duration.minutes(30),
+  diviationLT: 0,
+  dustUnitPriceLT: 0.6,
 });
