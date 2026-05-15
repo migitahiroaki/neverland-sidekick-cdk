@@ -23,6 +23,6 @@ const vedustSeekerStack = new VedustSeeker(app, "VedustSeeker", {
   ssmCoingeckoApiKey: "/VedustSeeker/CoingeckoApiKey",
   ssmOpenSeaApiKey: "/VedustSeeker/OpenSeaApiKey",
   seekInterval: cdk.Duration.minutes(30),
-  diviationLT: 0,
+  deviationLT: 0,
   dustUnitPriceLT: 0.6,
 });

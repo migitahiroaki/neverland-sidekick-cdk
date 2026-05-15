@@ -29,7 +29,7 @@ export interface VedustSeekerProps extends cdk.StackProps {
   readonly ssmOpenSeaApiKey: string;
   readonly seekInterval: cdk.Duration;
   readonly dustUnitPriceLT: number;
-  readonly diviationLT: number;
+  readonly deviationLT: number;
 }
 
 export class VedustSeeker extends cdk.Stack {
@@ -146,8 +146,8 @@ export class VedustSeeker extends cdk.Stack {
         role: schedulerRole,
         input: ScheduleTargetInput.fromObject({
           queryStringParameters: {
-            diviationLT: "0",
-            // diviationLT: props.diviationLT.toString(),
+            deviationLT: "0",
+            // deviationLT: props.deviationLT.toString(),
             // dustUnitPriceLT: props.dustUnitPriceLT.toString(),
           },
         }),
