@@ -1,3 +1,6 @@
 [submodule "subprojects/vedustseeker"]
 	path = subprojects/vedustseeker
 	url = https://github.com/migitahiroaki/vedustseeker.git
+[submodule "subprojects/logs-notify-discord"]
+	path = subprojects/logs-notify-discord
+	url = https://github.com/migitahiroaki/logs-notify-discord.git

@@ -10,14 +10,12 @@ import {
   aws_scheduler as scheduler,
   aws_scheduler_targets as targets,
   aws_iam as iam,
+  aws_logs as logs,
+  aws_logs_destinations as lds,
 } from "aws-cdk-lib";
 import * as cdk from "aws-cdk-lib/core";
 import * as path from "path";
 import { StringParameter } from "aws-cdk-lib/aws-ssm";
-import {
-  ScheduleExpression,
-  ScheduleTargetInput,
-} from "aws-cdk-lib/aws-scheduler";
 
 export interface VedustSeekerProps extends cdk.StackProps {
   readonly tableName: string;
@@ -30,6 +28,7 @@ export interface VedustSeekerProps extends cdk.StackProps {
   readonly seekInterval: cdk.Duration;
   readonly dustUnitPriceLT: number;
   readonly deviationLT: number;
+  readonly notifierLambda: lambda.IFunction;
 }
 
 export class VedustSeeker extends cdk.Stack {
@@ -141,10 +140,10 @@ export class VedustSeeker extends cdk.Stack {
     const schedulerName = "SeekDiscountedNftsScheduler";
     const schedule = new scheduler.Schedule(this, schedulerName, {
       scheduleName: schedulerName,
-      schedule: ScheduleExpression.rate(props.seekInterval),
+      schedule: scheduler.ScheduleExpression.rate(props.seekInterval),
       target: new targets.LambdaInvoke(this.vedustseekerLambda, {
         role: schedulerRole,
-        input: ScheduleTargetInput.fromObject({
+        input: scheduler.ScheduleTargetInput.fromObject({
           queryStringParameters: {
             deviationLT: "0",
             // deviationLT: props.deviationLT.toString(),
@@ -153,5 +152,28 @@ export class VedustSeeker extends cdk.Stack {
         }),
       }),
     });
+
+    const subscriptionFilterName = "DiscountedNftsLogsFilter";
+    const subscriptionFilter = new logs.SubscriptionFilter(
+      this,
+      subscriptionFilterName,
+      {
+        filterName: subscriptionFilterName,
+        logGroup: this.vedustseekerLambda.logGroup,
+        filterPattern: logs.FilterPattern.all(
+          logs.FilterPattern.numberValue(
+            "$.message.deviation",
+            "<",
+            props.deviationLT,
+          ),
+          logs.FilterPattern.numberValue(
+            "$.message.dustUnitPrice",
+            "<",
+            props.dustUnitPriceLT,
+          ),
+        ),
+        destination: new lds.LambdaDestination(props.notifierLambda),
+      },
+    );
   }
 }
