@@ -27,8 +27,8 @@ const vedustSeekerStack = new VedustSeeker(app, "VedustSeeker", {
   certUuid: "da4a526a-13d7-4c1e-80a7-6a1fdaffaafe",
   ssmCoingeckoApiKey: "/VedustSeeker/CoingeckoApiKey",
   ssmOpenSeaApiKey: "/VedustSeeker/OpenSeaApiKey",
-  seekInterval: cdk.Duration.minutes(10),
+  seekInterval: cdk.Duration.minutes(5),
   deviationLT: 0,
-  dustUnitPriceLT: 0.48,
+  dustUnitPriceLT: 0.485,
   notifierLambda: notifierStack.notifyDiscordLambda,
 });
