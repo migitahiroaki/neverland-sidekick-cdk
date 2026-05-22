@@ -29,6 +29,6 @@ const vedustSeekerStack = new VedustSeeker(app, "VedustSeeker", {
   ssmOpenSeaApiKey: "/VedustSeeker/OpenSeaApiKey",
   seekInterval: cdk.Duration.minutes(5),
   deviationLT: 0,
-  dustUnitPriceLT: 0.485,
+  dustUnitPriceLT: 0.40,
   notifierLambda: notifierStack.notifyDiscordLambda,
 });
