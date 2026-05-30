@@ -7,6 +7,8 @@ import path from "path";
 
 export interface NotifierProps extends cdk.StackProps {
   readonly ssmDiscordWebhookUrl: string;
+  readonly ssmJsonbinBinId: string;
+  readonly ssmJsonbinApiKey: string;
 }
 
 export class Notifier extends cdk.Stack {
@@ -43,6 +45,14 @@ export class Notifier extends cdk.Stack {
           WEBHOOK_URL: StringParameter.valueForStringParameter(
             this,
             props.ssmDiscordWebhookUrl,
+          ),
+          JSONBIN_BIN_ID: StringParameter.valueForStringParameter(
+            this,
+            props.ssmJsonbinBinId,
+          ),
+          JSONBIN_API_KEY: StringParameter.valueForStringParameter(
+            this,
+            props.ssmJsonbinApiKey,
           ),
         },
       },

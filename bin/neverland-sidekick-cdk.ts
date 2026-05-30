@@ -16,6 +16,8 @@ const vpcStack = new Vpc(app, "NeverlandSidekickVpc", { env });
 const notifierStack = new Notifier(app, "Notifier", {
   env,
   ssmDiscordWebhookUrl: "/Notifier/DiscordWebhookUrl",
+  ssmJsonbinBinId: "/Notifier/JsonbinBinId",
+  ssmJsonbinApiKey: "/Notifier/JsonbinApiKey",
 });
 
 const vedustSeekerStack = new VedustSeeker(app, "VedustSeeker", {
@@ -29,6 +31,6 @@ const vedustSeekerStack = new VedustSeeker(app, "VedustSeeker", {
   ssmOpenSeaApiKey: "/VedustSeeker/OpenSeaApiKey",
   seekInterval: cdk.Duration.minutes(5),
   deviationLT: 0,
-  dustUnitPriceLT: 0.40,
+  dustUnitPriceLT: 0.4,
   notifierLambda: notifierStack.notifyDiscordLambda,
 });
